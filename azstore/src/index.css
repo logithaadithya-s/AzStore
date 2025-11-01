@@ -1,0 +1,19 @@
+/* ---------- Theme Variables ---------- */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #222222;
+}
+
+.dark-theme {
+  --bg-color: #121212;
+  --text-color: #e6e6e6;
+}
+
+/* ---------- Global Body Styling ---------- */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
