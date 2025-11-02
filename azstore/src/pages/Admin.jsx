@@ -132,23 +132,62 @@ const Admin = () => {
     );
   }
 
+  const totalProducts = products.length;
+  const avgPrice = products.length > 0 
+    ? (products.reduce((sum, p) => sum + p.price, 0) / products.length).toFixed(2)
+    : '0.00';
+  const categoriesCount = new Set(products.map(p => p.category)).size;
+
   return (
     <div className="admin-page">
       <div className="admin-container">
         <div className="admin-header">
-          <h1>Admin Panel</h1>
+          <div>
+            <h1>Admin Panel</h1>
+            <p className="admin-subtitle">Manage your products and inventory</p>
+          </div>
           <div className="admin-user-info">
-            <span>Welcome, {user?.name || user?.email}</span>
+            <div className="user-details">
+              <span className="welcome-text">Welcome,</span>
+              <span className="user-name">{user?.name || user?.email}</span>
+            </div>
             <button onClick={handleLogout} className="logout-btn">
               Logout
             </button>
           </div>
         </div>
 
+        {/* Stats Cards */}
+        <div className="admin-stats">
+          <div className="stat-card">
+            <div className="stat-icon">📦</div>
+            <div className="stat-content">
+              <h3>{totalProducts}</h3>
+              <p>Total Products</p>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon">💰</div>
+            <div className="stat-content">
+              <h3>${avgPrice}</h3>
+              <p>Average Price</p>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon">🏷️</div>
+            <div className="stat-content">
+              <h3>{categoriesCount}</h3>
+              <p>Categories</p>
+            </div>
+          </div>
+        </div>
+
         <div className="admin-content">
           {/* Add Product Form */}
           <section className="admin-section">
-            <h2>Add New Product</h2>
+            <div className="section-header-inline">
+              <h2>Add New Product</h2>
+            </div>
             <form onSubmit={handleAddProduct} className="add-product-form">
               <div className="form-group">
                 <label>Title</label>
@@ -219,25 +258,43 @@ const Admin = () => {
           <section className="admin-section">
             <div className="section-header">
               <h2>All Products ({products.length})</h2>
-              <button onClick={fetchProducts} className="refresh-btn">
-                Refresh
-              </button>
+              <div className="header-actions">
+                <button onClick={fetchProducts} className="refresh-btn">
+                  🔄 Refresh
+                </button>
+              </div>
             </div>
             {loading ? (
               <Loader />
+            ) : products.length === 0 ? (
+              <div className="no-products-admin">
+                <p>No products found. Add your first product above!</p>
+              </div>
             ) : (
               <div className="admin-products-grid">
                 {products.map((product) => (
                   <div key={product.id} className="admin-product-card">
-                    <img src={product.image} alt={product.title} />
+                    <div className="admin-product-image-wrapper">
+                      <img src={product.image} alt={product.title} />
+                      <div className="product-overlay">
+                        <span className="product-id">ID: {product.id}</span>
+                      </div>
+                    </div>
                     <div className="admin-product-info">
                       <h3>{product.title}</h3>
-                      <p className="admin-product-price">${product.price}</p>
+                      <div className="product-meta">
+                        <span className="product-category-badge">{product.category}</span>
+                        <span className="admin-product-price">${product.price.toFixed(2)}</span>
+                      </div>
+                      <div className="product-rating-admin">
+                        <span>⭐ {product.rating?.rate || 'N/A'}</span>
+                        <span>({product.rating?.count || 0})</span>
+                      </div>
                       <button
                         onClick={() => handleDeleteProduct(product.id)}
                         className="delete-btn"
                       >
-                        Delete
+                        🗑️ Delete Product
                       </button>
                     </div>
                   </div>
