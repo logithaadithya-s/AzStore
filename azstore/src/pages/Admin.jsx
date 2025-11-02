@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-import { useAuth } from '../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 import { getAllProducts } from '../services/api';
 import Loader from '../components/Loader';
 import './Admin.css';
 
-// For demo purposes, using a placeholder. In production, get this from environment variables
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID';
-
 const Admin = () => {
-  const { user, login, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAdmin } = useUser();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +19,7 @@ const Admin = () => {
   });
 
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (isAdmin()) {
       fetchProducts();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,19 +38,9 @@ const Admin = () => {
     }
   };
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    // In a real app, you would verify the credential with your backend
-    // For demo purposes, we'll just create a user object
-    const userData = {
-      email: 'admin@azstore.com',
-      name: 'Admin User',
-      picture: '',
-    };
-    login(userData);
-  };
-
   const handleLogout = () => {
     logout();
+    navigate('/');
   };
 
   const handleAddProduct = (e) => {
@@ -87,45 +73,39 @@ const Admin = () => {
     }
   };
 
-  if (!isAuthenticated()) {
-    // Demo login for testing without Google OAuth setup
-    const handleDemoLogin = () => {
-      const userData = {
-        email: 'admin@azstore.com',
-        name: 'Demo Admin',
-        picture: '',
-      };
-      login(userData);
-    };
-
+  // Check if user is not logged in or not an admin
+  if (!user || !isAdmin()) {
     return (
       <div className="admin-page">
         <div className="admin-login">
           <div className="login-card">
-            <h2>Admin Login</h2>
-            <p>Please login to access the admin panel</p>
-            {GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID' ? (
-              <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={() => {
-                    alert('Login Failed');
-                  }}
-                />
-              </GoogleOAuthProvider>
-            ) : (
-              <div className="demo-login">
-                <p className="demo-notice">
-                  Note: Google OAuth not configured. Using demo login.
-                </p>
-                <button onClick={handleDemoLogin} className="demo-login-btn">
-                  Login as Demo Admin
-                </button>
-              </div>
-            )}
-            <button onClick={() => navigate('/')} className="back-home-btn">
-              Back to Home
-            </button>
+            <h2>Admin Access Required</h2>
+            <p>
+              {!user 
+                ? 'Please log in first to access the admin panel.'
+                : 'You need admin privileges to access this page.'}
+            </p>
+            <div className="admin-actions">
+              {!user ? (
+                <>
+                  <Link to="/login" className="demo-login-btn">
+                    Go to Login
+                  </Link>
+                  <p className="role-hint">
+                    💡 Tip: Select "Admin" account type during signup to gain admin access
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="role-hint">
+                    💡 You can switch to admin role from your user menu in the navbar
+                  </p>
+                </>
+              )}
+              <button onClick={() => navigate('/')} className="back-home-btn">
+                Back to Home
+              </button>
+            </div>
           </div>
         </div>
       </div>

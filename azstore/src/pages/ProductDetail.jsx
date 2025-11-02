@@ -106,27 +106,44 @@ const ProductDetail = () => {
           <div className="quantity-section">
             <label>Quantity:</label>
             <div className="quantity-controls">
-              <button
+              <motion.button
                 onClick={() => handleQuantityChange(-1)}
                 className="quantity-btn"
                 disabled={quantity <= 1}
+                whileHover={{ scale: quantity <= 1 ? 1 : 1.1 }}
+                whileTap={{ scale: quantity <= 1 ? 1 : 0.9 }}
               >
                 −
-              </button>
-              <span className="quantity-value">{quantity}</span>
-              <button
+              </motion.button>
+              <motion.span
+                className="quantity-value"
+                key={quantity}
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                {quantity}
+              </motion.span>
+              <motion.button
                 onClick={() => handleQuantityChange(1)}
                 className="quantity-btn"
                 disabled={quantity >= 10}
+                whileHover={{ scale: quantity >= 10 ? 1 : 1.1 }}
+                whileTap={{ scale: quantity >= 10 ? 1 : 0.9 }}
               >
                 +
-              </button>
+              </motion.button>
             </div>
           </div>
 
-          <button onClick={handleAddToCart} className="add-to-cart-detail-btn">
+          <motion.button
+            onClick={handleAddToCart}
+            className="add-to-cart-detail-btn"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+          >
             Add to Cart ({quantity})
-          </button>
+          </motion.button>
         </motion.div>
       </div>
     </div>

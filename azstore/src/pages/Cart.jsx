@@ -1,23 +1,42 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
+import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
+  const { user, addOrder } = useUser();
   const navigate = useNavigate();
 
   if (cart.length === 0) {
     return (
       <div className="cart-page">
         <div className="cart-container">
-          <h1 className="cart-title">Your Cart</h1>
-          <div className="empty-cart">
+          <motion.h1
+            className="cart-title"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            Your Cart
+          </motion.h1>
+          <motion.div
+            className="empty-cart"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
             <p>Your cart is empty</p>
-            <button onClick={() => navigate('/products')} className="shop-btn">
+            <motion.button
+              onClick={() => navigate('/products')}
+              className="shop-btn"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Start Shopping
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </div>
     );
@@ -26,12 +45,22 @@ const Cart = () => {
   return (
     <div className="cart-page">
       <div className="cart-container">
-        <div className="cart-header">
+        <motion.div
+          className="cart-header"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h1 className="cart-title">Your Cart</h1>
-          <button onClick={clearCart} className="clear-cart-btn">
+          <motion.button
+            onClick={clearCart}
+            className="clear-cart-btn"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             Clear Cart
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
         <div className="cart-content">
           <div className="cart-items">
@@ -84,25 +113,71 @@ const Cart = () => {
             </AnimatePresence>
           </div>
 
-          <div className="cart-summary">
+          <motion.div
+            className="cart-summary"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
             <h2 className="summary-title">Order Summary</h2>
-            <div className="summary-row">
+            <motion.div
+              className="summary-row"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
               <span>Items ({cart.reduce((sum, item) => sum + item.quantity, 0)})</span>
               <span>${getCartTotal().toFixed(2)}</span>
-            </div>
-            <div className="summary-row">
+            </motion.div>
+            <motion.div
+              className="summary-row"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
               <span>Shipping</span>
               <span>Free</span>
-            </div>
+            </motion.div>
             <div className="summary-divider"></div>
-            <div className="summary-row total">
+            <motion.div
+              className="summary-row total"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', delay: 0.6 }}
+            >
               <span>Total</span>
               <span>${getCartTotal().toFixed(2)}</span>
-            </div>
-            <button className="checkout-btn" onClick={() => alert('Checkout functionality would be implemented here!')}>
+            </motion.div>
+            <motion.button
+              className="checkout-btn"
+              onClick={() => {
+                if (!user) {
+                  alert('Please login to proceed with checkout');
+                  navigate('/login');
+                  return;
+                }
+                
+                // Create order
+                const orderData = {
+                  userEmail: user.email,
+                  items: cart,
+                  total: getCartTotal(),
+                };
+                
+                addOrder(orderData);
+                clearCart();
+                alert('Order placed successfully! You can view it in your profile.');
+                navigate('/profile');
+              }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+            >
               Proceed to Checkout
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </div>
     </div>

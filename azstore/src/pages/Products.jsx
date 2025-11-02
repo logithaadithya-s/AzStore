@@ -145,45 +145,70 @@ const Products = () => {
         {/* Products Grid */}
         <main className="products-main">
           {paginatedProducts.length === 0 ? (
-            <div className="no-products">
+            <motion.div
+              className="no-products"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               <p>No products found matching your criteria.</p>
-            </div>
+            </motion.div>
           ) : (
             <>
-              <div className="products-grid">
+              <motion.div
+                className="products-grid"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
                 {paginatedProducts.map((product, index) => (
                   <motion.div
                     key={product.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05, duration: 0.3 }}
+                    whileHover={{ y: -5 }}
                   >
                     <ProductCard product={product} />
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="pagination">
-                  <button
+                <motion.div
+                  className="pagination"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <motion.button
                     onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
                     className="pagination-btn"
+                    whileHover={{ scale: currentPage === 1 ? 1 : 1.05 }}
+                    whileTap={{ scale: currentPage === 1 ? 1 : 0.95 }}
                   >
                     Previous
-                  </button>
-                  <div className="pagination-info">
+                  </motion.button>
+                  <motion.div
+                    className="pagination-info"
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
                     Page {currentPage} of {totalPages}
-                  </div>
-                  <button
+                  </motion.div>
+                  <motion.button
                     onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
                     className="pagination-btn"
+                    whileHover={{ scale: currentPage === totalPages ? 1 : 1.05 }}
+                    whileTap={{ scale: currentPage === totalPages ? 1 : 0.95 }}
                   >
                     Next
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
               )}
             </>
           )}

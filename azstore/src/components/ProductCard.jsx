@@ -16,19 +16,23 @@ const ProductCard = ({ product }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -8, transition: { duration: 0.2 } }}
       transition={{ duration: 0.3 }}
       className="product-card"
     >
       <Link to={`/product/${product.id}`} className="product-link">
-        <div className="product-image-container">
+        <motion.div
+          className="product-image-container"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+        >
           <img
             src={product.image}
             alt={product.title}
             className="product-image"
             loading="lazy"
           />
-        </div>
+        </motion.div>
         <div className="product-info">
           <h3 className="product-title">{product.title}</h3>
           <div className="product-rating">
@@ -37,13 +41,15 @@ const ProductCard = ({ product }) => {
           </div>
           <div className="product-footer">
             <span className="product-price">${product.price.toFixed(2)}</span>
-            <button
+            <motion.button
               className="add-to-cart-btn"
               onClick={handleAddToCart}
               aria-label="Add to cart"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Add to Cart
-            </button>
+            </motion.button>
           </div>
         </div>
       </Link>

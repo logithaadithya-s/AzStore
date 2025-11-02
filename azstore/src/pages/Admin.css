@@ -43,6 +43,28 @@
   margin-bottom: 12px;
 }
 
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.role-hint {
+  font-size: 13px;
+  color: var(--text-color);
+  opacity: 0.8;
+  text-align: center;
+  margin: 0;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.dark-theme .role-hint {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .demo-login-btn {
   width: 100%;
   background: var(--profile-bg);

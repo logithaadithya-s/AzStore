@@ -1,0 +1,103 @@
+.hero-doodles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.floating-doodle {
+  position: absolute;
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  opacity: 0.8;
+}
+
+.floating-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translate(-50%, -50%);
+}
+
+.doodle-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+.cart-doodle {
+  position: absolute;
+  font-size: 48px;
+  top: 25%;
+  left: 8%;
+  opacity: 0.7;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.heart-doodle {
+  position: absolute;
+  font-size: 36px;
+  top: 60%;
+  right: 12%;
+  opacity: 0.6;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.star-burst {
+  position: absolute;
+  font-size: 40px;
+  top: 40%;
+  left: 75%;
+  opacity: 0.5;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+@media (max-width: 768px) {
+  .floating-doodle {
+    font-size: 24px;
+  }
+
+  .cart-doodle,
+  .heart-doodle,
+  .star-burst {
+    font-size: 32px;
+  }
+
+  .floating-circle {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-doodle {
+    font-size: 20px;
+  }
+
+  .cart-doodle,
+  .heart-doodle,
+  .star-burst {
+    font-size: 24px;
+  }
+
+  .doodle-lines {
+    opacity: 0.5;
+  }
+}
+

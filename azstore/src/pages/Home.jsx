@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { getAllProducts } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';
+import HeroDoodles from '../components/HeroDoodles';
 import './Home.css';
 
 const Home = () => {
@@ -38,6 +39,7 @@ const Home = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
+        <HeroDoodles />
         <div className="hero-content">
           <motion.h1
             className="hero-title"
