@@ -1,32 +1,44 @@
-import React, { useState } from "react";
-import "./Navbar.css";
+import { Link } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
+import { useCart } from '../../context/CartContext';
+import './Navbar.css';
 
 export default function Navbar() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle("dark-theme");
-  };
+  const { darkMode, toggleTheme } = useTheme();
+  const { getCartItemsCount } = useCart();
 
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <h2 className="logo">ProbMap</h2>
+        <Link to="/" className="logo-link">
+          <h2 className="logo">AzStore</h2>
+        </Link>
       </div>
 
       <ul className="navbar-links">
-        <li>Home</li>
-        <li>Report</li>
-        <li>Pending</li>
-        <li>History</li>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/products">Products</Link>
+        </li>
+        <li>
+          <Link to="/cart" className="cart-link">
+            Cart
+            {getCartItemsCount() > 0 && (
+              <span className="cart-badge">{getCartItemsCount()}</span>
+            )}
+          </Link>
+        </li>
+        <li>
+          <Link to="/admin">Admin</Link>
+        </li>
       </ul>
 
       <div className="navbar-right">
-        <button className="theme-toggle" onClick={toggleTheme}>
-          {darkMode ? "🌙" : "☀️"}
+        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+          {darkMode ? '🌙' : '☀️'}
         </button>
-        <div className="profile-circle">T</div>
       </div>
     </nav>
   );

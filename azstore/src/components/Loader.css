@@ -1,0 +1,34 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 20px;
+}
+
+.loader {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.loader-circle {
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--bg-color);
+  border-top-color: var(--profile-bg);
+  border-radius: 50%;
+}
+
+.loader-text {
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.dark-theme .loader-circle {
+  border-color: #2c2c2c;
+  border-top-color: #8a88ff;
+}
+
